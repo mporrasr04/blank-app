@@ -1,0 +1,43 @@
+{"Ejercicios":[
+    {
+        "id":"1",
+        "Enunciado":"Indica qué enunciados muestran una función.\na) Altura de una persona en función de la fecha de cumpleaños.\nb) Peso de los compañeros y compañeras de clase en función del número de zapato que calzan.\nc) Hora de salida al recreo en función de cada alumna.\nd) La matrícula de un coche en función de su color.\ne) El color de un coche en función de su matrícula.",
+        "Imagen":"Imagen1",
+        "Solucion":"No, no, si, no, si",
+        "Seccion":"Crecimiento y decrecimiento",
+        "Nivel":"2",
+        "Dificultad":"1",
+        "Error_tipo":["Confundir una relación cualquiera con una función.",
+  "No comprobar si a cada valor de entrada le corresponde una única salida.",
+  "Interpretar mal la expresión 'en función de'.",
+  "Confundir variable independiente con variable dependiente."]
+    },
+    {
+        "id":"2",
+        "Enunciado":"En la gráfica que se muestra (temperatura a lo largo del día):.\na) La temperatura mínima fue de ... grados, a las ... de la ... .\nb) A las cinco de la tarde hacía ... grados.\nc) A las ... de la mañana .\nd) La matrícula de un coche en función de su color.\ne) El color de un coche en función de su matrícula.",
+        "Imagen":"Imagen2",
+        "Solucion":[6, 7, "mañana", 23, 11, 14, 15],
+        "Seccion":"Concepto de funcion",
+        "Nivel":"1",
+        "Dificultad":"1",
+        "Error_tipo":["Interpretación incorrecta de gráficas",
+    "Lectura incorrecta de ejes",
+    "Confusión entre variable independiente y variable dependiente"]
+    },
+    {
+        "id":"3",
+        "Enunciado":"¿Cuáles de las siguientes gráficas son funciones y cuáles no?",
+        "Imagen":"Imagen3",
+        "Solucion":["si", "no", "si", "no"] ,
+        "Seccion":"Concepto de funcion",
+        "Nivel":"1",
+        "Dificultad":"1",
+        "Error_tipo":[
+            "Confusión entre relación y función",
+            "Interpretación incorrecta de representaciones gráficas",
+            "Dificultad para aplicar el concepto de unicidad de la imagen",
+            "Aplicación incorrecta del criterio de función"
+          ]
+    }
+    ]
+}
