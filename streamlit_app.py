@@ -1,60 +1,119 @@
 import streamlit as st
-from pathlib import Path
-from utils.carga_ejercicios import cargar_ejercicios
 
 st.set_page_config(
     page_title="Aprende Funciones",
-    page_icon="📈",
+    page_icon="📘",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 st.markdown("""
 <style>
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #eef4ff 0%, #dbeafe 45%, #e0f2fe 100%);
+}
+
 .main {
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding-top: 0rem;
 }
 
-.titulo {
+.hero-card {
+    width: 100%;
+    max-width: 950px;
+    margin: 2rem auto 1rem auto;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(10px);
+    border-radius: 28px;
+    padding: 3rem 2rem 2.2rem 2rem;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
     text-align: center;
-    font-size: 2.2rem;
+    border: 1px solid rgba(255,255,255,0.55);
+}
+
+.badge {
+    display: inline-block;
+    background: #1d4ed8;
+    color: white;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.3px;
+}
+
+.hero-title {
+    font-size: 3.2rem;
     font-weight: 800;
+    line-height: 1.1;
     color: #0f172a;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 
-.subtitulo {
-    text-align: center;
-    font-size: 1.05rem;
+.hero-title span {
+    color: #2563eb;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #334155;
+    max-width: 760px;
+    margin: 0 auto 1.4rem auto;
+    line-height: 1.7;
+}
+
+.hero-mini {
+    font-size: 1rem;
     color: #475569;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 }
 
-.tarjeta {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 18px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    margin-bottom: 1rem;
-}
-
-.feedback-ok {
-    background: #dcfce7;
-    color: #166534;
-    padding: 1rem;
-    border-radius: 12px;
-    margin-top: 1rem;
+.pill {
+    text-align: center;
+    background: #eff6ff;
+    color: #1e3a8a;
+    padding: 0.8rem 0.9rem;
+    border-radius: 999px;
     font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #bfdbfe;
+    margin: 0.3rem 0;
 }
 
-.feedback-error {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 1rem;
-    border-radius: 12px;
-    margin-top: 1rem;
-    font-weight: 600;
+.bottom-note {
+    margin-top: 1.2rem;
+    color: #64748b;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.stButton > button {
+    background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 0.95rem 1.2rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
+}
+
+.stButton > button:hover {
+    filter: brightness(1.05);
+}
+
+@media (max-width: 900px) {
+    .hero-title {
+        font-size: 2.3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+
+    .hero-card {
+        padding: 2rem 1.2rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -62,48 +121,51 @@ st.markdown("""
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
 
-if "indice_ejercicio" not in st.session_state:
-    st.session_state.indice_ejercicio = 0
-
-ejercicios = cargar_ejercicios()
-ejercicio = ejercicios[st.session_state.indice_ejercicio]
-
 if st.session_state.pantalla == "inicio":
-    st.markdown('<div class="titulo">📘 Aprende Funciones</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="subtitulo">Practica matemáticas paso a paso con ayuda inteligente.</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown("""
+<div class="hero-card">
+    <div class="badge">📚 Matemáticas · 2º de ESO</div>
+    <div class="hero-title">
+        Aprende <span>Funciones</span><br>
+        de forma visual e inteligente
+    </div>
+    <div class="hero-subtitle">
+        Practica el concepto de función, interpreta gráficas y resuelve ejercicios
+        paso a paso con ayuda adaptada a tus respuestas.
+    </div>
+    <div class="hero-mini">
+        Una aplicación pensada para aprender a tu ritmo, mejorar con cada intento
+        y ganar seguridad en matemáticas.
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1, 1, 1])
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.markdown('<div class="pill">📈 Gráficas</div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown('<div class="pill">🧠 Feedback inmediato</div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown('<div class="pill">🎯 Ejercicios adaptativos</div>', unsafe_allow_html=True)
+    with c4:
+        st.markdown('<div class="pill">🏆 Progreso por niveles</div>', unsafe_allow_html=True)
+
+    st.write("")
+
+    col1, col2, col3 = st.columns([1.2, 1, 1.2])
     with col2:
-        if st.button("Empezar", use_container_width=True):
+        if st.button("Comenzar", use_container_width=True):
             st.session_state.pantalla = "ejercicio"
             st.rerun()
 
+    st.markdown(
+        "<div class='bottom-note'>Preparado para alumnado de 2º de ESO</div>",
+        unsafe_allow_html=True
+    )
+
 elif st.session_state.pantalla == "ejercicio":
-    st.progress(0.2)
-    st.caption(f"Sección: {ejercicio['Seccion']} · Nivel: {ejercicio['Nivel']}")
-
-    st.markdown('<div class="tarjeta">', unsafe_allow_html=True)
-    st.subheader(f"Ejercicio {ejercicio['id']}")
-    st.write(ejercicio["Enunciado"])
-
-    ruta_imagen = Path("imagenes") / ejercicio["Imagen"]
-    if ruta_imagen.exists():
-        st.image(str(ruta_imagen), use_container_width=True)
-
-    respuesta = st.text_input("Escribe tu respuesta")
-    comprobar = st.button("Comprobar respuesta", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    if comprobar:
-        solucion_texto = ", ".join(ejercicio["Solucion"]) if isinstance(ejercicio["Solucion"], list) else ejercicio["Solucion"]
-
-        if respuesta.strip().lower() == solucion_texto.strip().lower():
-            st.markdown('<div class="feedback-ok">✅ Correcto. Muy bien hecho.</div>', unsafe_allow_html=True)
-        else:
-            st.markdown('<div class="feedback-error">❌ No es correcto. Inténtalo de nuevo o revisa la idea de función.</div>', unsafe_allow_html=True)
-            with st.expander("Posibles tipos de error"):
-                for error in ejercicio["Error_tipo"]:
-                    st.write(f"- {error}")
+    st.title("📘 Ejercicios")
+    st.write("Aquí irá el contenido de tus ejercicios.")
+    if st.button("Volver a la portada"):
+        st.session_state.pantalla = "inicio"
+        st.rerun()
