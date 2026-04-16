@@ -6,6 +6,7 @@
         "Solucion":"No, no, si, no, si",
         "Seccion":"Crecimiento y decrecimiento",
         "Nivel":"2",
+        "Tipo_respuesta": "texto",
         "Dificultad":"1",
         "Error_tipo":["Confundir una relación cualquiera con una función.",
   "No comprobar si a cada valor de entrada le corresponde una única salida.",
@@ -19,6 +20,7 @@
         "Solucion":[6, 7, "mañana", 23, 11, 14, 15],
         "Seccion":"Concepto de funcion",
         "Nivel":"1",
+        "Tipo_respuesta": "texto",
         "Dificultad":"2",
         "Error_tipo":["Interpretación incorrecta de gráficas",
     "Lectura incorrecta de ejes",
@@ -31,6 +33,7 @@
         "Solucion":["si", "no", "si", "no","si","no"] ,
         "Seccion":"Concepto de funcion",
         "Nivel":"1",
+        "Tipo_respuesta": "texto",
         "Dificultad":"1",
         "Error_tipo":[
             "Confusión entre relación y función",
@@ -45,6 +48,7 @@
         "Imagen":"Imagen3.png",
         "Solucion":["si", "no", "si", "no"] ,
         "Seccion":"Concepto de funcion",
+        "Tipo_respuesta": "texto",
         "Nivel":"1",
         "Dificultad":"2",
         "Error_tipo":[
@@ -60,14 +64,47 @@
         "Imagen":"Imagen4.png",
         "Solucion":[40, 1600, 40, 2800, 50,"Primero sube sin parar hasta los 1600 m, vuela a esa altura durante otros 40 minutos pasados los cuales de nuevo asciende hasta alcanzar los 2 800 m. Luego inicia el descenso, hasta llegar a los 1 400 m y, de nuevo, asciende hasta los 1 800 m para desde ahí descender al suelo."] ,
         "Seccion":"Crecimiento y decrecimiento",
+        "Tipo_respuesta": "texto",
         "Nivel":"2",
         "Dificultad":"2",
         "Error_tipo":[
-            "Confusión entre relación y función",
-            "Interpretación incorrecta de representaciones gráficas",
-            "Dificultad para aplicar el concepto de unicidad de la imagen",
-            "Aplicación incorrecta del criterio de función"
+            "Interpretación incorrecta de gráficas",
+            "Lectura incorrecta de ejes",
+            "Identificación errónea de máximos y mínimos",
+            "Dificultad para interpretar intervalos de crecimiento, decrecimiento y estabilidad",
+            "Confusión entre valores de la variable independiente y de la variable dependiente",
+            "Dificultad para extraer información global de una gráfica"
           ]
+    },
+    {
+        "id": "6",
+        "Enunciado": "Representa en unos ejes de coordenadas los datos de un saltador de longitud.",
+        "Tipo_respuesta": "coordenadas",
+        "Tabla": {
+            "SALTO": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "LONGITUD": [7.02, 7.11, 7.09, 7.23, 7.76, 7.87, 8.01, 7.69, 7.42, 7.26]
+        },
+        "Solucion": [
+            [1, 7.02],
+            [2, 7.11],
+            [3, 7.09],
+            [4, 7.23],
+            [5, 7.76],
+            [6, 7.87],
+            [7, 8.01],
+            [8, 7.69],
+            [9, 7.42],
+            [10, 7.26]
+        ],
+        "Seccion": "Funciones dadas por tablas de valores",
+        "Nivel": "3",
+        "Dificultad": "1",
+        "Error_tipo": [
+            "Confusión entre variable independiente y variable dependiente",
+            "Lectura o representación incorrecta de coordenadas",
+            "Interpretación incorrecta de tablas de valores",
+            "Representación gráfica incorrecta de datos"
+        ]
     }
     ]
 }

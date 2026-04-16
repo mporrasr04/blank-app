@@ -1,6 +1,8 @@
 import streamlit as st
 from pathlib import Path
 from utils.carga_ejercicios import cargar_ejercicios, filtrar_ejercicios
+import pandas as pd
+import matplotlib.pyplot as plt
 
 st.set_page_config(
     page_title="Aprende Funciones",
@@ -322,7 +324,6 @@ elif st.session_state.pantalla == "ejercicio":
             unsafe_allow_html=True
         )
 
-        # Mostrar imagen asociada al ejercicio
         nombre_imagen = ejercicio.get("Imagen", "").strip()
         if nombre_imagen:
             ruta_imagen = Path("Imagenes") / nombre_imagen
@@ -330,53 +331,111 @@ elif st.session_state.pantalla == "ejercicio":
                 col_img_1, col_img_2, col_img_3 = st.columns([1, 2.2, 1])
                 with col_img_2:
                     st.image(str(ruta_imagen), use_container_width=True)
-            else:
-                st.warning(f"No se encontró la imagen asociada: {ruta_imagen}")
+
+        tipo_respuesta = ejercicio.get("Tipo_respuesta", "texto")
 
         st.write("")
         st.subheader("✍️ Tu respuesta")
 
-        respuesta_usuario = st.text_area(
-            "Escribe aquí tu respuesta",
-            key=f"respuesta_{ejercicio['id']}",
-            height=120,
-            placeholder="Escribe tu respuesta aquí..."
-        )
+        if tipo_respuesta == "texto":
+            respuesta_usuario = st.text_area(
+                "Escribe aquí tu respuesta",
+                key=f"respuesta_{ejercicio['id']}",
+                height=120,
+                placeholder="Escribe tu respuesta aquí..."
+            )
 
-        col_resp_1, col_resp_2 = st.columns(2)
+            col_resp_1, col_resp_2 = st.columns(2)
 
-        with col_resp_1:
-            comprobar = st.button("Comprobar respuesta", use_container_width=True)
+            with col_resp_1:
+                comprobar = st.button("Comprobar respuesta", use_container_width=True)
 
-        with col_resp_2:
-            siguiente = st.button("Siguiente ejercicio", use_container_width=True)
+            with col_resp_2:
+                siguiente = st.button("Siguiente ejercicio", use_container_width=True)
 
-        if comprobar:
-            solucion = ejercicio.get("Solucion", "")
+            if comprobar:
+                solucion = ejercicio.get("Solucion", "")
 
-            if isinstance(solucion, list):
-                solucion_texto = ", ".join([str(x).strip().lower() for x in solucion])
-            else:
-                solucion_texto = str(solucion).strip().lower()
+                if isinstance(solucion, list):
+                    solucion_texto = ", ".join([str(x).strip().lower() for x in solucion])
+                else:
+                    solucion_texto = str(solucion).strip().lower()
 
-            respuesta_normalizada = respuesta_usuario.strip().lower()
+                respuesta_normalizada = respuesta_usuario.strip().lower()
 
-            if respuesta_normalizada == solucion_texto:
-                st.success("✅ Correcto. Muy bien hecho.")
-            else:
-                st.error("❌ No es correcto. Revisa tu respuesta e inténtalo de nuevo.")
+                if respuesta_normalizada == solucion_texto:
+                    st.success("✅ Correcto. Muy bien hecho.")
+                else:
+                    st.error("❌ No es correcto. Revisa tu respuesta e inténtalo de nuevo.")
 
-                errores = ejercicio.get("Error_tipo", [])
-                if errores:
-                    with st.expander("Posibles tipos de error"):
-                        for error in errores:
-                            st.write(f"- {error}")
+            if siguiente:
+                st.session_state.indice_ejercicio += 1
+                if st.session_state.indice_ejercicio >= len(ejercicios_actuales):
+                    st.session_state.indice_ejercicio = 0
+                st.rerun()
 
-        if siguiente:
-            st.session_state.indice_ejercicio += 1
-            if st.session_state.indice_ejercicio >= len(ejercicios_actuales):
-                st.session_state.indice_ejercicio = 0
-            st.rerun()
+        elif tipo_respuesta == "coordenadas":
+            tabla = ejercicio.get("Tabla", {})
+            saltos = tabla.get("SALTO", [])
+            longitudes_vacias = [""] * len(saltos)
 
+            df = pd.DataFrame({
+                "SALTO": saltos,
+                "LONGITUD": longitudes_vacias
+            })
+
+            tabla_editable = st.data_editor(
+                df,
+                num_rows="fixed",
+                use_container_width=True,
+                key=f"tabla_{ejercicio['id']}"
+            )
+
+            col_resp_1, col_resp_2, col_resp_3 = st.columns(3)
+
+            with col_resp_1:
+                dibujar = st.button("Dibujar puntos", use_container_width=True)
+
+            with col_resp_2:
+                comprobar = st.button("Comprobar respuesta", use_container_width=True)
+
+            with col_resp_3:
+                siguiente = st.button("Siguiente ejercicio", use_container_width=True)
+
+            if dibujar or comprobar:
+                try:
+                    x = tabla_editable["SALTO"].tolist()
+                    y = [float(str(v).replace(",", ".")) for v in tabla_editable["LONGITUD"].tolist()]
+
+                    fig, ax = plt.subplots()
+                    ax.scatter(x, y)
+                    ax.plot(x, y)
+                    ax.set_xlabel("Salto")
+                    ax.set_ylabel("Longitud")
+                    ax.set_title("Representación de los saltos")
+                    ax.grid(True)
+                    st.pyplot(fig)
+
+                    if comprobar:
+                        solucion = ejercicio.get("Solucion", [])
+
+                        def respuestas_iguales(resp, sol, tol=1e-2):
+                            if len(resp) != len(sol):
+                                return False
+                            return all(abs(r - s) <= tol for r, s in zip(resp, sol))
+
+                        if respuestas_iguales(y, solucion):
+                            st.success("✅ Correcto. Has representado bien los datos.")
+                        else:
+                            st.error("❌ Hay valores incorrectos en la representación.")
+
+                except ValueError:
+                    st.error("Revisa los valores introducidos. Todas las longitudes deben ser numéricas.")
     else:
         st.warning("No hay ejercicios para el nivel y la dificultad seleccionados.")
+
+    if siguiente:
+        st.session_state.indice_ejercicio += 1
+        if st.session_state.indice_ejercicio >= len(ejercicios_actuales):
+            st.session_state.indice_ejercicio = 0
+        st.rerun()
