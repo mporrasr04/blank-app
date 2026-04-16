@@ -2,7 +2,7 @@
     {
         "id":"1",
         "Enunciado":"Indica qué enunciados muestran una función.\na) Altura de una persona en función de la fecha de cumpleaños.\nb) Peso de los compañeros y compañeras de clase en función del número de zapato que calzan.\nc) Hora de salida al recreo en función de cada alumna.\nd) La matrícula de un coche en función de su color.\ne) El color de un coche en función de su matrícula.",
-        "Imagen":"Imagen1",
+        "Imagen":"",
         "Solucion":"No, no, si, no, si",
         "Seccion":"Crecimiento y decrecimiento",
         "Nivel":"2",
@@ -14,12 +14,12 @@
     },
     {
         "id":"2",
-        "Enunciado":"En la gráfica que se muestra (temperatura a lo largo del día):.\na) La temperatura mínima fue de ... grados, a las ... de la ... .\nb) A las cinco de la tarde hacía ... grados.\nc) A las ... de la mañana .\nd) La matrícula de un coche en función de su color.\ne) El color de un coche en función de su matrícula.",
-        "Imagen":"Imagen2",
+        "Enunciado":"En la gráfica que se muestra (temperatura a lo largo del día):.\na) La temperatura mínima fue de ... grados, a las ... de la ... .\nb) A las cinco de la tarde hacía ... grados.\nc) A las ... de la mañana la temperatura era de 12ºC.\nd) El sol estuvo oculto por las nubes durante una hora, entre las ... y las ... de la tarde.",
+        "Imagen":"Imagen2.png",
         "Solucion":[6, 7, "mañana", 23, 11, 14, 15],
         "Seccion":"Concepto de funcion",
         "Nivel":"1",
-        "Dificultad":"1",
+        "Dificultad":"2",
         "Error_tipo":["Interpretación incorrecta de gráficas",
     "Lectura incorrecta de ejes",
     "Confusión entre variable independiente y variable dependiente"]
@@ -27,11 +27,41 @@
     {
         "id":"3",
         "Enunciado":"¿Cuáles de las siguientes gráficas son funciones y cuáles no?",
-        "Imagen":"Imagen3",
-        "Solucion":["si", "no", "si", "no"] ,
+        "Imagen":"Imagen1.png",
+        "Solucion":["si", "no", "si", "no","si","no"] ,
         "Seccion":"Concepto de funcion",
         "Nivel":"1",
         "Dificultad":"1",
+        "Error_tipo":[
+            "Confusión entre relación y función",
+            "Interpretación incorrecta de representaciones gráficas",
+            "Dificultad para aplicar el concepto de unicidad de la imagen",
+            "Aplicación incorrecta del criterio de función"
+          ]
+    },
+    {
+        "id":"4",
+        "Enunciado":"¿Cuáles de las siguientes gráficas son funciones y cuáles no?",
+        "Imagen":"Imagen3.png",
+        "Solucion":["si", "no", "si", "no"] ,
+        "Seccion":"Concepto de funcion",
+        "Nivel":"1",
+        "Dificultad":"2",
+        "Error_tipo":[
+            "Confusión entre relación y función",
+            "Interpretación incorrecta de representaciones gráficas",
+            "Dificultad para aplicar el concepto de unicidad de la imagen",
+            "Aplicación incorrecta del criterio de función"
+          ]
+    },
+    {
+        "id":"5",
+        "Enunciado":"En la gráfica puedes ver la altura de una avioneta durante sus 3 horas de vuelo.\n a) ¿Cuánto tiempo permanece estable?¿A qué altura? \n b) ¿Cuánto tarda en estabilizar la altura? \n c) ¿Cuándo llega al máximo? ¿Qué altura alcanza? \nd) Haz un breve resumen de la evolución de la altura de la avioneta desde que despega hasta su aterrizaje.",
+        "Imagen":"Imagen4.png",
+        "Solucion":[40, 1600, 40, 2800, 50,"Primero sube sin parar hasta los 1600 m, vuela a esa altura durante otros 40 minutos pasados los cuales de nuevo asciende hasta alcanzar los 2 800 m. Luego inicia el descenso, hasta llegar a los 1 400 m y, de nuevo, asciende hasta los 1 800 m para desde ahí descender al suelo."] ,
+        "Seccion":"Crecimiento y decrecimiento",
+        "Nivel":"2",
+        "Dificultad":"2",
         "Error_tipo":[
             "Confusión entre relación y función",
             "Interpretación incorrecta de representaciones gráficas",

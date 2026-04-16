@@ -1,4 +1,6 @@
 import streamlit as st
+from pathlib import Path
+from utils.carga_ejercicios import cargar_ejercicios, filtrar_ejercicios
 
 st.set_page_config(
     page_title="Aprende Funciones",
@@ -87,6 +89,72 @@ st.markdown("""
     text-align: center;
 }
 
+.exercise-card {
+    width: 100%;
+    max-width: 1000px;
+    margin: 1.5rem auto 1rem auto;
+    background: rgba(255,255,255,0.9);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+    border: 1px solid rgba(255,255,255,0.6);
+}
+
+.exercise-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+
+.exercise-meta {
+    text-align: center;
+    color: #475569;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.exercise-box {
+    background: #f8fafc;
+    border: 1px solid #dbeafe;
+    border-radius: 18px;
+    padding: 1.4rem;
+    margin-top: 1rem;
+}
+
+.exercise-label {
+    color: #1e3a8a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.exercise-text {
+    color: #0f172a;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+.info-chip {
+    display: inline-block;
+    background: #eff6ff;
+    color: #1e3a8a;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.2rem;
+    border: 1px solid #bfdbfe;
+}
+
+.top-actions {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
 .stButton > button {
     background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
     color: white;
@@ -114,13 +182,51 @@ st.markdown("""
     .hero-card {
         padding: 2rem 1.2rem;
     }
+
+    .exercise-title {
+        font-size: 1.6rem;
+    }
+
+    .exercise-card {
+        padding: 1.2rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
 
+# -----------------------------
+# Estado inicial
+# -----------------------------
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
 
+if "nivel_actual" not in st.session_state:
+    st.session_state.nivel_actual = "1"
+
+if "dificultad_actual" not in st.session_state:
+    st.session_state.dificultad_actual = "1"
+
+if "indice_ejercicio" not in st.session_state:
+    st.session_state.indice_ejercicio = 0
+
+# -----------------------------
+# Carga y filtrado de ejercicios
+# -----------------------------
+todos_los_ejercicios = cargar_ejercicios()
+
+ejercicios_actuales = filtrar_ejercicios(
+    todos_los_ejercicios,
+    nivel=st.session_state.nivel_actual,
+    dificultad=st.session_state.dificultad_actual
+)
+
+# Seguridad por si el índice se sale
+if ejercicios_actuales and st.session_state.indice_ejercicio >= len(ejercicios_actuales):
+    st.session_state.indice_ejercicio = 0
+
+# -----------------------------
+# Pantalla de inicio
+# -----------------------------
 if st.session_state.pantalla == "inicio":
     st.markdown("""
 <div class="hero-card">
@@ -156,6 +262,9 @@ if st.session_state.pantalla == "inicio":
     with col2:
         if st.button("Comenzar", use_container_width=True):
             st.session_state.pantalla = "ejercicio"
+            st.session_state.nivel_actual = "1"
+            st.session_state.dificultad_actual = "1"
+            st.session_state.indice_ejercicio = 0
             st.rerun()
 
     st.markdown(
@@ -163,9 +272,111 @@ if st.session_state.pantalla == "inicio":
         unsafe_allow_html=True
     )
 
+# -----------------------------
+# Pantalla de ejercicios
+# -----------------------------
 elif st.session_state.pantalla == "ejercicio":
-    st.title("📘 Ejercicios")
-    st.write("Aquí irá el contenido de tus ejercicios.")
-    if st.button("Volver a la portada"):
-        st.session_state.pantalla = "inicio"
-        st.rerun()
+    st.markdown('<div class="top-actions">', unsafe_allow_html=True)
+
+    col_top_1, col_top_2, col_top_3 = st.columns([1, 2, 1])
+    with col_top_1:
+        if st.button("⬅ Volver a la portada", use_container_width=True):
+            st.session_state.pantalla = "inicio"
+            st.rerun()
+
+    with col_top_2:
+        st.markdown(
+            f"""
+            <div style="text-align:center; margin-top:0.35rem;">
+                <span class="info-chip">Nivel {st.session_state.nivel_actual}</span>
+                <span class="info-chip">Dificultad {st.session_state.dificultad_actual}</span>
+                <span class="info-chip">{len(ejercicios_actuales)} ejercicios disponibles</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col_top_3:
+        if ejercicios_actuales:
+            progreso = (st.session_state.indice_ejercicio + 1) / len(ejercicios_actuales)
+            st.progress(progreso)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if ejercicios_actuales:
+        ejercicio = ejercicios_actuales[st.session_state.indice_ejercicio]
+
+        st.markdown(
+            f"""
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio {ejercicio['id']}</div>
+                <div class="exercise-meta">
+                    Sección: {ejercicio.get('Seccion', 'Sin sección')}
+                </div>
+                <div class="exercise-box">
+                    <div class="exercise-label">Enunciado</div>
+                    <div class="exercise-text">{ejercicio['Enunciado']}</div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Mostrar imagen asociada al ejercicio
+        nombre_imagen = ejercicio.get("Imagen", "").strip()
+        if nombre_imagen:
+            ruta_imagen = Path("Imagenes") / nombre_imagen
+            if ruta_imagen.exists():
+                col_img_1, col_img_2, col_img_3 = st.columns([1, 2.2, 1])
+                with col_img_2:
+                    st.image(str(ruta_imagen), use_container_width=True)
+            else:
+                st.warning(f"No se encontró la imagen asociada: {ruta_imagen}")
+
+        st.write("")
+        st.subheader("✍️ Tu respuesta")
+
+        respuesta_usuario = st.text_area(
+            "Escribe aquí tu respuesta",
+            key=f"respuesta_{ejercicio['id']}",
+            height=120,
+            placeholder="Escribe tu respuesta aquí..."
+        )
+
+        col_resp_1, col_resp_2 = st.columns(2)
+
+        with col_resp_1:
+            comprobar = st.button("Comprobar respuesta", use_container_width=True)
+
+        with col_resp_2:
+            siguiente = st.button("Siguiente ejercicio", use_container_width=True)
+
+        if comprobar:
+            solucion = ejercicio.get("Solucion", "")
+
+            if isinstance(solucion, list):
+                solucion_texto = ", ".join([str(x).strip().lower() for x in solucion])
+            else:
+                solucion_texto = str(solucion).strip().lower()
+
+            respuesta_normalizada = respuesta_usuario.strip().lower()
+
+            if respuesta_normalizada == solucion_texto:
+                st.success("✅ Correcto. Muy bien hecho.")
+            else:
+                st.error("❌ No es correcto. Revisa tu respuesta e inténtalo de nuevo.")
+
+                errores = ejercicio.get("Error_tipo", [])
+                if errores:
+                    with st.expander("Posibles tipos de error"):
+                        for error in errores:
+                            st.write(f"- {error}")
+
+        if siguiente:
+            st.session_state.indice_ejercicio += 1
+            if st.session_state.indice_ejercicio >= len(ejercicios_actuales):
+                st.session_state.indice_ejercicio = 0
+            st.rerun()
+
+    else:
+        st.warning("No hay ejercicios para el nivel y la dificultad seleccionados.")
